@@ -1,0 +1,4 @@
+key            = "dev/nginx"
+region         = "eu-central-1"
+dynamodb_table = "terraform-lock-table"
+bucket         = "terraform-state-nginx"
