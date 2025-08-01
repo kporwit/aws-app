@@ -1,0 +1,28 @@
+version: '3'
+
+vars:
+  STATE_BUCKET: "terraform-state-nginx-project"
+
+tasks:
+  upload-remote-state:
+    cmds:
+      - aws s3 cp terraform/remote-state/terraform.tfstate s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate
+  plan-remote-state:
+    cmds:
+      #- aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate
+      - cd terraform/remote-state && terraform init && terraform plan
+  apply-remote-state:
+    cmds:
+      - aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate
+      - cd terraform/remote-state && terraform apply
+      - aws s3 cp terraform/remote-state/terraform.tfstate s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate
+  destroy-remote-state:
+    cmds:
+      - aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate
+      - aws s3 rm --recursive s3://{{.STATE_BUCKET}}/
+      - cd terraform/remote-state && terraform destroy
+  configure-backend-dev:
+    cmds:
+      - if grep "bucket" terraform/config/config.dev.tfbackend; then sed -i '$d' terraform/config/config.dev.tfbackend; fi
+      - echo "bucket = \"{{.STATE_BUCKET}}\"" >> terraform/config/config.dev.tfbackend
+      - cd terraform && terraform init -backend-config=config/config.dev.tfbackend -reconfigure
