@@ -72,7 +72,7 @@ All ECS part can be found under `terraform/ecs.tf` file.
 
 - ECS Task Definition with CloudWatch monitoring enabled. Set up as a Fargate tasks.
 
-- ALB with HTTPS and HTTP listener. HTTP is redirected to HTTPS and HTTPS is forwarded to Target Group where the tasks are registered.
+- IAM policy with S3 bucket access attached to the task role.
 
 
 ### Security Group part
@@ -88,3 +88,8 @@ All ECS part can be found under `terraform/ecs.tf` file.
 - ACM certificate for `example.com` domain which is connected to HTTPS listener (SSL termination).
 
 - Route53 CNAME record which points `<appliction>-<environment>` subdomain to ALB DNS.
+
+### S3 part
+
+- KMS key used for bucket encryption
+- S3 bucket with private ACL, versioning enabled and server side encryption set to KMS key
