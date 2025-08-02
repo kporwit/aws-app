@@ -81,8 +81,8 @@ module "ecs_service" {
   }
 
 
-  create_task_exec_iam_role = true
-  task_exec_iam_role_name   = "${local.name_prefix}-task-role"
+  create_tasks_iam_role = true
+  tasks_iam_role_name   = "${local.name_prefix}-task-role"
 
   subnet_ids = module.vpc.private_subnets
 
@@ -92,7 +92,7 @@ module "ecs_service" {
 }
 
 resource "aws_iam_role_policy_attachment" "test-attach" {
-  role       = module.ecs_service.task_exec_iam_role_arn
+  role       = module.ecs_service.tasks_iam_role_arn
   policy_arn = aws_iam_policy.ecs_task_policy.arn
 }
 
