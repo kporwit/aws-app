@@ -80,9 +80,37 @@ module "ecs_service" {
     }
   }
 
+
+  create_task_exec_iam_role = true
+  task_exec_iam_role_name   = "${local.name_prefix}-task-role"
+
   subnet_ids = module.vpc.private_subnets
 
   security_group_ids = [
     aws_security_group.ecs_sg.id
   ]
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = module.ecs_service.task_exec_iam_role_arn
+  policy_arn = aws_iam_policy.ecs_task_policy.arn
+}
+
+resource "aws_iam_policy" "ecs_task_policy" {
+  name   = "${local.name_prefix}-task-policy"
+  policy = data.aws_iam_policy_document.bucket_access_policy.json
+}
+
+data "aws_iam_policy_document" "bucket_access_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.name_prefix}-bucket",
+    ]
+  }
 }
