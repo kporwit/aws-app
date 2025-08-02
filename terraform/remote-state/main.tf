@@ -38,24 +38,3 @@ module "s3-bucket" {
     terraform = "true"
   }
 }
-
-module "dynamodb-table" {
-  source  = "terraform-aws-modules/dynamodb-table/aws"
-  version = "4.0.0"
-
-  name     = "terraform-lock-table"
-  hash_key = "LockID"
-
-  point_in_time_recovery_enabled = true
-
-  attributes = [
-    {
-      name = "LockID"
-      type = "S"
-    }
-  ]
-
-  tags = {
-    terraform = "true"
-  }
-}

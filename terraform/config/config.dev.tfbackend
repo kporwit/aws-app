@@ -1,4 +1,4 @@
 key            = "dev/nginx"
 region         = "eu-central-1"
-dynamodb_table = "terraform-lock-table"
+use_lockfile   = true
 bucket         = "terraform-state-nginx-project"
