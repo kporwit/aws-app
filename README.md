@@ -57,7 +57,7 @@ All networking resources can be found under `terraform/network.tf` file.
 - VPC with internet gateway to establish connectivity with IP CIDR `10.0.0.0/16`
 - two private subnets in separate AZs with CIDRs `10.0.1.0/24` and `10.0.2.0/24`
 - two private db subnets in separate AZs with CIDRs `10.0.3.0/24` and `10.0.4.0/24`
-- two public subnets in separate AZs with CIDRs `10.0.1.0/24` and `10.0.2.0/24`
+- two public subnets in separate AZs with CIDRs `10.0.101.0/24` and `10.0.102.0/24`
 - NAT Gateway in single AZ
 - Route pollicies to make the connectivity work
 - data resource for the domain
