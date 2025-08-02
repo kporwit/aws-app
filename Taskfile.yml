@@ -9,11 +9,11 @@ tasks:
       - aws s3 cp terraform/remote-state/terraform.tfstate s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate
   plan-remote-state:
     cmds:
-      #- aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate
+      - aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate || true
       - cd terraform/remote-state && terraform init && terraform plan
   apply-remote-state:
     cmds:
-      - aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate
+      - aws s3 cp s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate terraform/remote-state/terraform.tfstate || true
       - cd terraform/remote-state && terraform apply
       - aws s3 cp terraform/remote-state/terraform.tfstate s3://{{.STATE_BUCKET}}/remote-state/terraform.tfstate
   destroy-remote-state:
